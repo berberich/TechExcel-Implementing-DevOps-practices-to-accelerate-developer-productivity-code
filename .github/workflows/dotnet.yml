@@ -77,7 +77,7 @@ jobs:
       - uses: azure/webapps-deploy@v2
         with:
           app-name: 'ubprp5t7ucjlg-dev'
-          images: {your_registry_name}.azurecr.io/techboost/dotnetcoreapp:${{github.run_number}}
+          images: ${{ env.registryName }}.azurecr.io/techboost/dotnetcoreapp:${{github.run_number}}
 
   deploy-to-test:
   
@@ -98,7 +98,7 @@ jobs:
     - uses: azure/webapps-deploy@v2
       with:
         app-name: 'ubprp5t7ucjlg-test'
-        images: {your_registry_name}.azurecr.io/techboost/dotnetcoreapp:${{github.run_number}}
+        images: ${{ env.registryName }}.azurecr.io/techboost/dotnetcoreapp:${{github.run_number}}
 
   deploy-to-prod:
   
@@ -119,4 +119,4 @@ jobs:
     - uses: azure/webapps-deploy@v2
       with:
         app-name: 'ubprp5t7ucjlg-prod'
-        images: {your_registry_name}.azurecr.io/techboost/dotnetcoreapp:${{github.run_number}}
+        images: ${{ env.registryName }}.azurecr.io/techboost/dotnetcoreapp:${{github.run_number}}
