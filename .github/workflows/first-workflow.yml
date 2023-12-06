@@ -13,3 +13,13 @@ jobs:
 
       - name: Step 2
         run: echo "Step 2 complete!"
+
+  job2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cowsay
+        uses: actions/cowsay@master
+        with:
+          text: "Ready for prod-ship it!"
+          color: 'magenta'
