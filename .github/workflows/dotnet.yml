@@ -60,3 +60,63 @@ jobs:
       
     - name: Docker Push
       run: docker push $registryName/$repositoryName:$tag
+  deploy-to-dev:
+  
+    runs-on: ubuntu-latest
+    needs: dockerBuildPush
+    environment:
+      name: dev
+      url: https://ubprp5t7ucjlg-dev.azurewebsites.net/
+    
+    steps:
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'ubprp5t7ucjlg-dev'
+          images: {your_registry_name}.azurecr.io/techboost/dotnetcoreapp:${{github.run_number}}
+
+  deploy-to-test:
+  
+    runs-on: ubuntu-latest
+    needs: deploy-to-dev
+    environment:
+      name: test
+      url: https://ubprp5t7ucjlg-test.azurewebsites.net/
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'ubprp5t7ucjlg-test'
+        images: {your_registry_name}.azurecr.io/techboost/dotnetcoreapp:${{github.run_number}}
+
+  deploy-to-prod:
+  
+    runs-on: ubuntu-latest
+    needs: deploy-to-test
+    environment:
+      name: prod
+      url: https://ubprp5t7ucjlg-prod.azurewebsites.net/
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'ubprp5t7ucjlg-prod'
+        images: {your_registry_name}.azurecr.io/techboost/dotnetcoreapp:${{github.run_number}}
