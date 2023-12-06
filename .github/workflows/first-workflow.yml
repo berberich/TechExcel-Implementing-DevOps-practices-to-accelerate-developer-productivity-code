@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Cowsay
-        uses: actions/cowsay@master
+        uses: mscoutermarsh/cowsays-action@master
         with:
           text: "Ready for prod-ship it!"
           color: 'magenta'
